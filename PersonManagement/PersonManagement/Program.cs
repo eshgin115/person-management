@@ -5,16 +5,17 @@ namespace PersonManagement
 {
     internal class Program
     {
-       public static List<Person> persons { get; set; }  = new List<Person>();
+        public static List<Person> persons { get; set; } = new List<Person>();
         static void Main(string[] args)
         {
-           
+
 
             Console.WriteLine("Our available commands :");
             Console.WriteLine("/add-new-person");
             Console.WriteLine("/remove-person");
             Console.WriteLine("/show-persons");
             Console.WriteLine("/remove-all-persons");
+            Console.WriteLine("/remove-person-by-id");
             Console.WriteLine("/exit");
 
             while (true)
@@ -36,23 +37,29 @@ namespace PersonManagement
 
                     AddNewPerson(name, lastName, fin);
 
-                
+
 
                 }
-                else if (command == "/remove-person")
+                else if (command == "/remove-person-by-fin")
                 {
                     Console.Write("To remove person, please enter his/her FIN code : ");
                     string fin = Console.ReadLine();
-                    ShowPersons(fin);
-
-
-
+                    RemovePerson(fin);            
+                        
+                 }
+                else if(command == "/remove-person-by-id")
+                {
+                    Console.Write("To remove person, please enter his/her id code : ");
+                    uint id = Convert.ToUInt32(Console.ReadLine());
+                    RemovePerson(id);
 
                 }
                 else if (command == "/show-persons")
                 {
                     Console.WriteLine("Persons in database : ");
-                    RemovePerson();
+                    ShowPersons();
+
+
                 }
                 else if (command == "/exit")
                 {
@@ -70,15 +77,22 @@ namespace PersonManagement
                 }
             }
         }
-        public static void AddNewPerson(string name,string lastName,string fin)
+        public static void AddNewPerson(string name, string lastName, string fin)
         {
             Person person = new Person(name, lastName, fin);
             persons.Add(person);
-            Console.WriteLine(person.GetInfo() + " - Added to system.");
+
         }
-        public static void ShowPersons(string fin)
+        public static void ShowPersons()
         {
-            
+
+            foreach (Person person in persons)
+            {
+                Console.WriteLine(person.GetInfo());
+            }
+        }
+        public static void RemovePerson(string fin)
+        {
             for (int i = 0; i < persons.Count; i++)
             {
                 if (persons[i].FIN == fin)
@@ -89,11 +103,16 @@ namespace PersonManagement
                 }
             }
         }
-        public static void RemovePerson()
+        public static void RemovePerson(uint id)
         {
-            foreach (Person person in persons)
+            for (int i = 0; i < persons.Count; i++)
             {
-                Console.WriteLine(person.GetInfo());
+                if (persons[i].id == id)
+                {
+                    Console.WriteLine(persons[i].GetInfo());
+                    persons.RemoveAt(i);
+                    Console.WriteLine("Person removed successfully");
+                }
             }
         }
         public static void RemoveAll()
@@ -108,15 +127,19 @@ namespace PersonManagement
 
     class Person
     {
+        public static uint _idcounter = 1;
+        public uint id { get; private set; }
         public string Name { get; set; }
         public string LastName { get; set; }
         public string FIN { get; set; }
 
         public Person(string name, string lastName, string fin)
         {
+            id = _idcounter;
             Name = name;
             LastName = lastName;
             FIN = fin;
+            _idcounter++;
         }
 
         public string GetFullName()
@@ -126,7 +149,7 @@ namespace PersonManagement
 
         public string GetInfo()
         {
-            return Name + " " + LastName + " " + FIN;
+            return Name + " " + LastName + " " + FIN + "" +id;
         }
     }
 }
