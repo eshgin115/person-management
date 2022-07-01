@@ -5,9 +5,10 @@ namespace PersonManagement
 {
     internal class Program
     {
+       public static List<Person> persons { get; set; }  = new List<Person>();
         static void Main(string[] args)
         {
-            List<Person> persons = new List<Person>();
+           
 
             Console.WriteLine("Our available commands :");
             Console.WriteLine("/add-new-person");
@@ -33,25 +34,19 @@ namespace PersonManagement
                     Console.Write("Please add person's FIN code :");
                     string fin = Console.ReadLine();
 
-                    Person person = new Person(name, lastName, fin);
-                    persons.Add(person);
+                    AddNewPerson(name, lastName, fin);
 
-                    Console.WriteLine(person.GetInfo() + " - Added to system.");
+                
 
                 }
                 else if (command == "/remove-person")
                 {
                     Console.Write("To remove person, please enter his/her FIN code : ");
                     string fin = Console.ReadLine();
-                    for (int i = 0; i < persons.Count; i++)
-                    {
-                        if (persons[i].FIN == fin)
-                        {
-                            Console.WriteLine(persons[i].GetInfo());
-                            persons.RemoveAt(i);
-                            Console.WriteLine("Person removed successfully");
-                        }
-                    }
+                    ShowPersons(fin);
+
+
+
 
                 }
                 else if (command == "/show-persons")
@@ -79,6 +74,25 @@ namespace PersonManagement
                 {
                     Console.WriteLine("Command not found, please enter command from list!");
                     Console.WriteLine();
+                }
+            }
+        }
+        public static void AddNewPerson(string name,string lastName,string fin)
+        {
+            Person person = new Person(name, lastName, fin);
+            persons.Add(person);
+            Console.WriteLine(person.GetInfo() + " - Added to system.");
+        }
+        public static void ShowPersons(string fin)
+        {
+            
+            for (int i = 0; i < persons.Count; i++)
+            {
+                if (persons[i].FIN == fin)
+                {
+                    Console.WriteLine(persons[i].GetInfo());
+                    persons.RemoveAt(i);
+                    Console.WriteLine("Person removed successfully");
                 }
             }
         }
