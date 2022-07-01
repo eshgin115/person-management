@@ -52,10 +52,7 @@ namespace PersonManagement
                 else if (command == "/show-persons")
                 {
                     Console.WriteLine("Persons in database : ");
-                    foreach (Person person in persons)
-                    {
-                        Console.WriteLine(person.GetInfo());
-                    }
+                    RemovePerson();
                 }
                 else if (command == "/exit")
                 {
@@ -64,11 +61,7 @@ namespace PersonManagement
                 }
                 else if (command == "/remove-all-persons")
                 {
-                    for (int i = 0; i <= persons.Count; i++)
-                    {
-                        persons.RemoveAt(0);
-                    }
-                    Console.WriteLine("All user remove");
+                    RemoveAll();
                 }
                 else
                 {
@@ -95,6 +88,21 @@ namespace PersonManagement
                     Console.WriteLine("Person removed successfully");
                 }
             }
+        }
+        public static void RemovePerson()
+        {
+            foreach (Person person in persons)
+            {
+                Console.WriteLine(person.GetInfo());
+            }
+        }
+        public static void RemoveAll()
+        {
+            for (int i = 0; i <= persons.Count; i++)
+            {
+                persons.RemoveAt(0);
+            }
+            Console.WriteLine("All user remove");
         }
     }
 
